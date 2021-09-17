@@ -1,4 +1,4 @@
-function [claheI] = makeClaheImage(I, tileMappings, numTiles, selectedRange, numBins, dimTile)
+function [claheI] = makeClaheImage(I, tileMappings, numTiles, selectedRange, dimTile)
 % makeClaheImage - 生成 CLAHE 图像
 %
 % input:
@@ -6,7 +6,6 @@ function [claheI] = makeClaheImage(I, tileMappings, numTiles, selectedRange, num
 %   - tileMappings: numTiles(1) * numTiles(2) * numBins, 每个 tile 的映射关系
 %   - numTiles: 1*2, 高度, 宽度方向上 tile 的个数
 %   - selectedRange: 1*2, tile 动态范围, 一般为(min, max)
-%   - numBins: int, 直方图 bin 的个数
 %   - dimTile: 1*2, 每个 tile 的高和宽
 % output:
 %   - claheI: CLAHE 图像
@@ -73,7 +72,7 @@ for i = 1:numTiles(1)+1
             inverseR = imgTileNumRows - r;
             for c = 0:imgTileNumCols-1
                 inverseC = imgTileNumCols - c;
-                claheTile(r+1, c+1) = fix(inverseR * (inverseC * ulTile(r+1, c+1) + c * urTile(r+1, c+1)) + i * (inverseC * blTile(r+1, c+1) + c * brTile(r+1, c+1))/normFactor);
+                claheTile(r+1, c+1) = round((inverseR * (inverseC * ulTile(r+1, c+1) + c * urTile(r+1, c+1)) + r * (inverseC * blTile(r+1, c+1) + c * brTile(r+1, c+1)))/normFactor);
             end
         end
 
