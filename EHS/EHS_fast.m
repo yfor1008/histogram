@@ -18,8 +18,8 @@ alpha = 0.05;
 beta = 0.1;
 
 gx = G(h,w);
-f = double(im');
-f = f(:);
+f = double(im);
+f = reshape(f, h*w, 1);
 u = f;
 
 for r = 1:R
@@ -29,10 +29,12 @@ for r = 1:R
 end
 
 L = 256;
-H = fix(ones(256, 1) * h*w / 256);
-c = zeros(256, 1);
+H = fix(ones(L, 1) * h*w / L);
+R = h*w - sum(H);
+H(1:R) = H(1:R) + 1;
+c = zeros(L, 1);
 
-[~, idx_o]=sort(u, 'ascend');
+[~, idx_o] = sort(u, 'ascend');
 
 ehs = f;
 for k = 0:L-1
@@ -42,7 +44,7 @@ for k = 0:L-1
     ehs(idx) = k;
 end
 
-ehs = reshape(ehs, w, h)';
+ehs = reshape(ehs, h, w);
 ehs = uint8(ehs);
 
 end
